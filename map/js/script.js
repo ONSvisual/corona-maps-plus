@@ -21,13 +21,14 @@ if(Modernizr.webgl) {
 		firsthover = true;
 
 
-		layernames = ["unp65","unp6550p"];
+		layernames = ["unp65p","unp6550p","unpdisp","oneperp","depchildp"];
+
 		layername = "unp65p";
 
-		hoverlayernames = ["unp65","unp6550p"];
+		hoverlayernames = ["unp65p","unp6550p","unpdisp","oneperp","depchildp"];
 		hoverlayername = "unp65p";
 
-		secondvars = ["unp65","unp6550"];
+		secondvars = ["unp65","unp6550","unpdis","oneper","depchild"];
 		secondvar = "unp65";
 
 		// windowheight = window.innerHeight;
@@ -691,7 +692,7 @@ if(Modernizr.webgl) {
 
 				createKey(config);
 
-				//
+				console.log(layername)
 
 				d3.selectAll(".input--radio").property("checked",false);
 				d3.selectAll("#radio" +getindexoflayer).property("checked",true);
@@ -719,7 +720,7 @@ if(Modernizr.webgl) {
 
 				map.setPaintProperty("lsoa-outlines2", 'fill-color', styleObject);
 
-				console.log(features)
+				//console.log(features)
 				if(typeof features !== 'undefined' ) {
 					setAxisVal(features[0].properties.lsoa11nm, features[0].properties.lsoa11cd,features[0].properties[hoverlayername],features[0].properties[secondvar]);
 

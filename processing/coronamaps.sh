@@ -19,13 +19,10 @@ echo 'joining buildings to house price data'
 mapshaper-xl OSdistrictByLSOA.shp -join caredata.csv keys=lsoa11cd,lsoa11cd field-types=lsoa11cd:str,lsoa11nm:str,unp65:num,unp65p:num,unp6550:num,unp6550p:num,unpdis:num,unpdisp:num,oneper:num,oneperp:num,depchild:num,depchildp:num -o joined.shp
 
 
-#reduce precisions
-mapshaper-xl joined.shp precision=0.0001 -o reducedprecisions.shp
-
 echo 'converting to geojson'
 #convert to geojson
 #this will take a while
-ogr2ogr -f GeoJSON -t_srs crs:84 -lco COORDINATE_PRECISION=5 caredata.geojson reducedprecisions.shp
+ogr2ogr -f GeoJSON -t_srs crs:84 -lco COORDINATE_PRECISION=5 caredata.geojson joined.shp
 
 echo 'generating tiles'
 #Make the tiles
