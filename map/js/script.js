@@ -21,15 +21,17 @@ if(Modernizr.webgl) {
 		firsthover = true;
 
 
-		layernames = ["unp65p","unp6550p","unpdisp","oneperp","depchildp"];
+		layernames = dvc.layernames;
 
-		layername = "unp65p";
+		layername = dvc.layerstart;
 
-		hoverlayernames = ["unp65p","unp6550p","unpdisp","oneperp","depchildp"];
-		hoverlayername = "unp65p";
+		hoverlayernames = dvc.layernames;
+		hoverlayername = dvc.layerstart;
 
-		secondvars = ["unp65","unp6550","unpdis","oneper","depchild"];
-		secondvar = "unp65";
+		secondvars = dvc.secondvars;
+		secondvar = dvc.secondvars[layernames.indexOf(layername)];
+
+		oldtileset = dvc.tileSet[layernames.indexOf(layername)];
 
 		// windowheight = window.innerHeight;
 		// d3.select("#map").style("height",windowheight + "px")
@@ -55,6 +57,10 @@ if(Modernizr.webgl) {
 			maxZoom: 17, //
 		  attributionControl: false
 		});
+
+		//
+		//var U = require('mapbox-gl-utils').init(map);
+
 		//add fullscreen option
 		map.addControl(new mapboxgl.FullscreenControl());
 
@@ -135,7 +141,7 @@ if(Modernizr.webgl) {
 				"source": {
 					"type": "vector",
 					//"tiles": ["http://localhost:8000/boundaries/{z}/{x}/{y}.pbf"],
-					"tiles": ["https://cdn.ons.gov.uk/maptiles/t27/boundaries/{z}/{x}/{y}.pbf"],
+					"tiles": ["https://cdn.ons.gov.uk/maptiles/" + dvc.tileSet[0] + "/boundaries/{z}/{x}/{y}.pbf"]
 				},
 				"minzoom": 9,
 				"maxzoom": 20,
@@ -169,7 +175,7 @@ if(Modernizr.webgl) {
 				"source": {
 					"type": "vector",
 					//"tiles": ["http://localhost:8000/boundaries/{z}/{x}/{y}.pbf"],
-					"tiles": ["https://cdn.ons.gov.uk/maptiles/t27/boundaries/{z}/{x}/{y}.pbf"],
+					"tiles": ["https://cdn.ons.gov.uk/maptiles/" + dvc.tileSet[0] + "/boundaries/{z}/{x}/{y}.pbf"]
 				},
 				"minzoom": 4,
 				"maxzoom": 9,
@@ -197,15 +203,16 @@ if(Modernizr.webgl) {
 					}
 			}, 'highway_name_other');
 
+
 				map.addLayer({
 					"id": "imdlayer",
 					'type': 'fill',
 					"source": {
 						"type": "vector",
 						//"tiles": ["http://localhost:8000/tiles/{z}/{x}/{y}.pbf"],
-						"tiles": ["https://cdn.ons.gov.uk/maptiles/t27/tiles/{z}/{x}/{y}.pbf"],
+						"tiles": ["https://cdn.ons.gov.uk/maptiles/" + dvc.tileSet[0] + "/tiles/{z}/{x}/{y}.pbf"]
 					},
-					"source-layer": "caredata",
+					"source-layer": "seventyplus",
 					"background-color": "#ccc",
 					'paint': {
 							'fill-opacity':1,
@@ -237,7 +244,7 @@ if(Modernizr.webgl) {
 					"source": {
 						"type": "vector",
 						//"tiles": ["http://localhost:8000/boundaries/{z}/{x}/{y}.pbf"],
-						"tiles": ["https://cdn.ons.gov.uk/maptiles/t27/boundaries/{z}/{x}/{y}.pbf"],
+						"tiles": ["https://cdn.ons.gov.uk/maptiles/" + dvc.tileSet[0] + "/boundaries/{z}/{x}/{y}.pbf"],
 					},
 					"minzoom": 9,
 					"maxzoom": 20,
@@ -257,7 +264,7 @@ if(Modernizr.webgl) {
 					"source": {
 						"type": "vector",
 						//"tiles": ["http://localhost:8000/boundaries/{z}/{x}/{y}.pbf"],
-						"tiles": ["https://cdn.ons.gov.uk/maptiles/t27/boundaries/{z}/{x}/{y}.pbf"],
+						"tiles": ["https://cdn.ons.gov.uk/maptiles/" + dvc.tileSet[0] + "/boundaries/{z}/{x}/{y}.pbf"],
 					},
 					"minzoom": 4,
 					"maxzoom": 9,
@@ -269,6 +276,9 @@ if(Modernizr.webgl) {
 					},
 					"filter": ["==", "lsoa11cd", ""]
 				}, 'place_suburb');
+
+
+			console.log(map.getStyle().sources["imdlayer"])
 
 			//test whether ie or not
 			function detectIE() {
@@ -679,6 +689,24 @@ if(Modernizr.webgl) {
 					} //end createLegend
 
 
+		function setLayerSource (layerId, source, sourceLayer) {
+		    var oldLayers = map.getStyle().layers;
+		    var layerIndex = oldLayers.findIndex(l => l.id === layerId);
+		    var layerDef = oldLayers[layerIndex];
+		    var before = oldLayers[layerIndex + 1] && oldLayers[layerIndex + 1].id;
+		    layerDef.source = source;
+		    if (sourceLayer) {
+		        layerDef['source-layer'] = sourceLayer;
+		    }
+				currsource = map.getStyle().sources["imdlayer"];
+				console.log(currsource)
+
+		    map.removeLayer(layerId);
+				map.removeSource(layerId);
+		    map.addLayer(layerDef, before);
+		}
+
+
 			function repaintLayer(){
 
 				layername = d3.select(this).attr("value");
@@ -713,6 +741,29 @@ if(Modernizr.webgl) {
 					]
 						}
 
+
+				source1 = {
+							"type": "vector",
+							//"tiles": ["http://localhost:8000/boundaries/{z}/{x}/{y}.pbf"],
+							"tiles": ["https://cdn.ons.gov.uk/maptiles/" + dvc.tileSet[getindexoflayer] + "/boundaries/{z}/{x}/{y}.pbf"],
+						}
+
+				source2 =		{
+							"type": "vector",
+							//"tiles": ["http://localhost:8000/tiles/{z}/{x}/{y}.pbf"],
+							"tiles": ["https://cdn.ons.gov.uk/maptiles/" + dvc.tileSet[getindexoflayer] + "/tiles/{z}/{x}/{y}.pbf"],
+						}
+
+				//Reset sources if necessary (ie if variable belongs to different tileset)
+
+				if(oldtileset != dvc.tileSet[getindexoflayer]) {
+						setLayerSource("imdlayer",source2, dvc.sourceLayer[getindexoflayer])
+						setLayerSource("lsoa-outlines",source1)
+						setLayerSource("lsoa-outlines2",source1)
+				}
+
+
+
 				//repaint area layer map usign the styles above
 				map.setPaintProperty("imdlayer", 'fill-color', styleObject);
 
@@ -726,52 +777,8 @@ if(Modernizr.webgl) {
 
  			 }
 
-			}
+			 oldtileset = dvc.tileSet[getindexoflayer]
 
-			function addLayer(layername){
-
-
-
-				map.addLayer({
-					"id": layername,
-					'type': 'fill',
-					"source": {
-						"id":'vectorsource',
-						"type": "vector",
-						//"tiles": ["http://localhost:8000/tiles/{z}/{x}/{y}.pbf"],
-						"tiles": ["https://cdn.ons.gov.uk/maptiles/t18/tiles/{z}/{x}/{y}.pbf"],
-						"minzoom": 4,
-						"maxzoom": 13
-					},
-					"source-layer": "imddata2",
-					"background-color": "#ccc",
-					'paint': {
-							'fill-opacity':1,
-							'fill-outline-color':'rgba(0,0,0,0)',
-							'fill-color': {
-									// Refers to the data of that specific property of the polygon
-								'property': layername,
-								'default': '#666666',
-								// Prevents interpolation of colors between stops
-								'base': 0,
-								'stops': [
-									[0, '#d0587e'],
-									[1, '#d0587e'],
-									[2, '#da7b91'],
-									[3, '#e39ca5'],
-									[4, '#eabcb9'],
-									[5, '#f0dccd'],
-									[6, '#e6f5d0'],
-									[7, '#bfe4ab'],
-									[8, '#97d287'],
-									[9, '#6cc064'],
-									[10, '#37ae3f']
-
-								]
-							}
-
-						}
-				}, 'lsoa-outlines');
 			}
 
 
