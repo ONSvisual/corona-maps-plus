@@ -205,7 +205,7 @@ if(Modernizr.webgl) {
 						"tiles": ["http://localhost:8000/tiles/{z}/{x}/{y}.pbf"],
 						//"tiles": ["https://cdn.ons.gov.uk/maptiles/t26/tiles/{z}/{x}/{y}.pbf"],
 					},
-					"source-layer": "seventyplus",
+					"source-layer": "caredata",
 					"background-color": "#ccc",
 					'paint': {
 							'fill-opacity':1,
