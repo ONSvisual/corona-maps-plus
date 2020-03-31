@@ -1,7 +1,7 @@
 {"ons":{
 "maptitle": "Small area population estimates - LSOA",
 "varcolour": ["#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#0c2c84"],
-"legendvars":["% Provides unpaid care age 65+","% Age 65+ Provides 50 or more hours unpaid care a week","People who provide unpaid care for 1 or more people in household with a long-term health problem or disability","One person household: Total %","% Dependent children in household (employment): All ages"],
+"legendvars":["% 65+ year olds providing unpaid care","% 65+ year olds providing 50+ hours unpaid care a week","People who provide unpaid care for 1 or more people in household with a long-term health problem or disability","One person household: Total %","% Dependent children in household (employment): All ages"],
 "varunit": "&nbsp;&nbsp;<b>&#x25B2;</b> <br>10% least deprived areas",
 "varunit2": "&#x25B2;&nbsp;&nbsp;<br>10% most deprived areas",
 "varunit3": "10% highest income areas <br>&nbsp;&nbsp;&darr;",
