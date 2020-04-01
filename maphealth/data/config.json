@@ -1,0 +1,30 @@
+{"ons":{
+"maptitle": "Coronovirus health and care map",
+"varcolour": ["#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#0c2c84"],
+"legendvars":[
+  "% One person household",
+  "% One person household aged 65 and over",
+  "% Day-to-day activities limited a lot",
+  "% Day-to-day activities limited a lot: Aged 65 and over",
+  "% Very bad and bad health",
+  "% One person in household with a long-term health problem or disability",
+  "% One person in household with a long-term health problem or disability: With dependent children"
+],
+"varunit": "&nbsp;&nbsp;<b>&#x25B2;</b> <br>10% least deprived areas",
+"varunit2": "&#x25B2;&nbsp;&nbsp;<br>10% most deprived areas",
+"varunit3": "10% highest income areas <br>&nbsp;&nbsp;&darr;",
+"varunit4": "10% lowest income areas <br>&nbsp;&nbsp;&darr;",
+"displaydecimals": 1,
+"legenddecimals": 0,
+"breaks": [
+  [0.5,22.4,28.8,35.8,45.6,93.6],
+  [0,24.1,36.8,48.1,59.6,87.1],
+  [0.4,5.6,8.2,11.1,15,30],
+  [0,3.1,4.9,6.8,9.5,20.7],
+  [0.3,3.8,5.6,7.7,10.6,23.5],
+  [3,18.2,23.6,28.4,34,60.1],
+  [0,3.2,4.8,6.7,9.4,20.5]
+],
+"dropticks": true,
+"numberBreaks":5
+}}
