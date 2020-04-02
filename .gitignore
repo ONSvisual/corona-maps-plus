@@ -3,3 +3,7 @@
 .DS_Store
 processing/OSdistrictByLSOA.zip
 map/tiles.zip
+processinghealth/lsoaboundaries.geojson
+processinghealth/OSdistrictByLSOA.zip
+processinghealth/healthcare.geojson
+processinghealth/__MACOSX/._OSdistrictByLSOA.shp
