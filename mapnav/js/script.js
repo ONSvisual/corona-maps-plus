@@ -669,6 +669,7 @@ if(Modernizr.webgl) {
 											.attr("id", "details" + j)
 											.attr("class", "detailsvar")
 											.attr("role","group")
+											.style("padding-left","10px")
 											.attr("min-height","30px")
 
 
@@ -682,8 +683,8 @@ if(Modernizr.webgl) {
 												.style("font-size","16px")
 												.style("color","#206095")
 												.on("click", function(){
-													d3.selectAll(".detailsvar").property("open",false);
-													d3.select("details" + j).property("open",true);
+													// d3.selectAll(".detailsvar").property("open",false);
+													// d3.select("details" + j).property("open",true);
 												})
 
 
