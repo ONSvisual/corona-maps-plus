@@ -661,8 +661,8 @@ if(Modernizr.webgl) {
 
 				hierarchy.forEach(function(k,j) {
 
-						d3.select("#radioselect")
-										.append("hr")
+						// d3.select("#radioselect")
+						// 				.append("hr")
 
 						detailshier = d3.select("#radioselect")
 											.append("details")
