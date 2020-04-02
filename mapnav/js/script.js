@@ -649,43 +649,81 @@ if(Modernizr.webgl) {
 
 			function createLegend(keydata) {
 
+				//First get unique values in array (hierarchy)
+				hierarchy = d3.set(dvc.structure).values();
+
+				//merge structure and labels
+				mergedvars = d3.zip(dvc.structure,dvc.legendvars)
+				console.log(mergedvars.filter(function(d,i){return d[0] == hierarchy[0]}))
 				//draw radio buttons
 
-				d3.select("#radioselect")
-							.append("p")
-							.style("padding-left","10px")
-							.style("font-size","16px")
-							.style("margin-bottom","3px")
-							//.text("Income before/after housing costs")
+				count = 0
+
+				hierarchy.forEach(function(k,j) {
+
+						d3.select("#radioselect")
+										.append("hr")
+
+						detailshier = d3.select("#radioselect")
+											.append("details")
+											.attr("id", "details" + j)
+											.attr("class", "detailsvar")
+											.attr("role","group")
+											.attr("min-height","30px")
 
 
-				radio = d3.select("#radioselect")
-									.selectAll('rad')
-									.data(keydata.ons.legendvars)
-									.enter()
-									.append('div')
-									.style("float","left")
-									.style("width","100%")
-									.style("padding-left","10px")
-									.style("padding-right","10px")
+
+										d3.select("#details0").property("open",true)
 
 
-					radio.append("input")
-							.attr("id",function(d,i){return "radio"+i})
-							.attr("class","input input--radio js-focusable")
-							.attr("type","radio")
-							.attr("name","layerchoice")
-							.attr("value", function(d,i){return layernames[i]})
-							.property("checked", function(d,i){if(i==0){return true}})
-							.on("click",repaintLayer)
+										detailshier.append("summary")
+												.text(k)
+												.style("font-weight","bold")
+												.style("font-size","16px")
+												.style("color","#206095")
+												.on("click", function(){
+													d3.selectAll(".detailsvar").property("open",false);
+													d3.select("details" + j).property("open",true);
+												})
 
-					radio.append('label')
-					.attr('class','legendlabel').text(function(d,i) {
-						var value = parseFloat(d).toFixed(1);
-						return d;
-					})
-					.attr("value", function(d,i){return layernames[i]})
-					.on("click",repaintLayer);
+
+
+						radio = d3.select("#details" + j)
+											.selectAll('rad')
+											.data(mergedvars.filter(function(d,i){return d[0] == hierarchy[j]}))
+											.enter()
+											.append('div')
+											.style("float","left")
+											.style("width","100%")
+											.style("padding-left","10px")
+											.style("padding-right","10px")
+
+
+							radio.append("input")
+									.attr("id",function(d,i){console.log(d); return "radio"+(i + count)})
+									.attr("class","input input--radio js-focusable")
+									.attr("type","radio")
+									.attr("name","layerchoice")
+									.attr("value", function(d,i){return layernames[(i + count)]})
+									//.property("checked", function(d,i){if(i==0){return true}})
+									.on("click",repaintLayer)
+
+							radio.append('label')
+									.attr('class','legendlabel').text(function(d,i) {
+										var value = parseFloat(d[1]).toFixed(1);
+										return d[1];
+									})
+									.attr("value", function(d,i){return layernames[(i + count)]})
+									.on("click",repaintLayer);
+
+
+
+
+							count = count + mergedvars.filter(function(d,i){return d[0] == hierarchy[j]}).length;
+
+				});
+
+
 
 
 

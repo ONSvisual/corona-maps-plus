@@ -17,7 +17,8 @@
   "One person household: Total %",
   "% Dependent children in household (employment): All ages"
 ],
-"sourceLayer":["seventyplus","seventyplus","caredata","caredata","caredata","caredata","caredata"],
+"structure":["Old age & household structure","Old age & household structure","Old age & household structure","Old age & household structure","Health","Health","Health","Health","Health","Care","Care","Care","Care","Care"],
+"sourceLayer":["seventyplus","seventyplus","healthcare","healthcare","healthcare","healthcare","healthcare","healthcare","healthcare","caredata","caredata","caredata","caredata","caredata"],
 "layernames":["seventyper","eighty5per","oneperp","onep65p","lmlotp","lmlot65p","badhp","onedisp","onediscp","unp65p","unp6550p","unpdisp","oneperp","depchildp"],
 "layerstart": "seventyper",
 "secondvars": ["seventy","eighty5","oneper","onep65","lmlot","lmlot65","badh","onedis","onedisc","unp65","unp6550","unpdis","oneper","depchild"],
