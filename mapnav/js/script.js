@@ -33,6 +33,8 @@ if(Modernizr.webgl) {
 
 		oldtileset = dvc.tileSet[layernames.indexOf(layername)];
 
+		getindexoflayer = 0;
+
 		// windowheight = window.innerHeight;
 		// d3.select("#map").style("height",windowheight + "px")
 
@@ -51,8 +53,8 @@ if(Modernizr.webgl) {
 		  container: 'map', // container id
 		  style: 'data/style.json', //stylesheet location
 			//style: 'https://s3-eu-west-1.amazonaws.com/tiles.os.uk/v2/styles/open-zoomstack-night/style.json',
-		  center: [-1.89, 52.4106], // starting position51.5074° N, 0.127850.910637,-1.27441
-		  zoom:5.7, // starting zoom
+		  center: [-1.89, 52.9106], // starting position51.5074° N, 0.127850.910637,-1.27441
+		  zoom:5.5, // starting zoom
 		  minZoom:4,
 			maxZoom: 17, //
 		  attributionControl: false
@@ -612,12 +614,12 @@ if(Modernizr.webgl) {
 
 					keyhor.call(xAxis).append("text")
 						.attr("id", "caption")
-						.attr("x", 50)
+						.attr("x", 0)
 						.attr("y", 50)
 						.attr("fill","#323132")
-						.style("text-anchor","left")
+						.style("text-anchor","start")
 						.attr("font-size","14px")
-						.text("% of population");
+						.text(dvc.legendlabels[getindexoflayer]);
 
 					keyhor.append("rect")
 						.attr("id","keybar")
@@ -649,6 +651,20 @@ if(Modernizr.webgl) {
 
 			function createLegend(keydata) {
 
+				open = true;
+
+				d3.select(".details__summary")
+							.on("click",function(){
+								if(open == true){
+									d3.select(this).text("Show variables")
+									open = false;
+								} else {
+									d3.select(this).text("Hide variables")
+									open = true;
+								}
+
+							})
+
 				//First get unique values in array (hierarchy)
 				hierarchy = d3.set(dvc.structure).values();
 
@@ -657,7 +673,7 @@ if(Modernizr.webgl) {
 				console.log(mergedvars.filter(function(d,i){return d[0] == hierarchy[0]}))
 				//draw radio buttons
 
-				count = 0
+				count = 0;
 
 				hierarchy.forEach(function(k,j) {
 
@@ -669,7 +685,7 @@ if(Modernizr.webgl) {
 											.attr("id", "details" + j)
 											.attr("class", "detailsvar")
 											.attr("role","group")
-											.style("padding-left","10px")
+											.style("padding","0px 0px 0px 10px")
 											.attr("min-height","30px")
 
 
@@ -682,6 +698,7 @@ if(Modernizr.webgl) {
 												.style("font-weight","bold")
 												.style("font-size","16px")
 												.style("color","#206095")
+												.style("margin-bottom","10px")
 												.on("click", function(){
 													// d3.selectAll(".detailsvar").property("open",false);
 													// d3.select("details" + j).property("open",true);
@@ -706,7 +723,7 @@ if(Modernizr.webgl) {
 									.attr("type","radio")
 									.attr("name","layerchoice")
 									.attr("value", function(d,i){return layernames[(i + count)]})
-									//.property("checked", function(d,i){if(i==0){return true}})
+									.property("checked", function(d,i){if((count+i)==0){return true}})
 									.on("click",repaintLayer)
 
 							radio.append('label')
