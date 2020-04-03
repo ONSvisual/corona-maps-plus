@@ -16,8 +16,7 @@ unzip OSdistrictByLSOA.zip
 
 #join buildings to seventy plus data
 echo 'joining buildings to house price data'
-mapshaper-xl OSdistrictByLSOA.shp -join healthcare.csv keys=lsoa11cd,lsoa11cd field-types=lsoa11cd:str,lsoa11nm:str,oneper:num,oneperp:num,onep65:num,onep65p:num,lmlot:num,lmlotp:num,lmlot65:num,lmlot65p:num,badh:num,badhp:num,onedis:num,onedisp:num,onedisc:num,onediscp:num -o joined.shp
-
+mapshaper-xl OSdistrictByLSOA.shp -join healthcare.csv keys=lsoa11cd,lsoa11cd field-types=lsoa11cd:str,lsoa11nm:str,oneper:num,oneperp:num,onep65:num,onep65p:num,lmlot:num,lmlotp:num,lm70:num,lm70p:num,badh:num,badhp:num,badh70:num,badh70p:num,onedis:num,onedisp:num,onedisc:num,onediscp:num -o joined.shp
 
 echo 'converting to geojson'
 #convert to geojson
@@ -62,10 +61,10 @@ echo 'joining data to LSOA boundaries'
 ogr2ogr -f geojson -t_srs crs:84 -sql "SELECT lsoa11cd, lsoa11nm FROM lsoaboundaries" bounds.geojson lsoaboundaries.geojson
 
 #join seventy plus to boundaries too
-mapshaper-xl bounds.geojson -join healthcare.csv keys=lsoa11cd,lsoa11cd field-types=lsoa11cd:str,lsoa11nm:str,oneper:num,oneperp:num,onep65:num,onep65p:num,lmlot:num,lmlotp:num,lmlot65:num,lmlot65p:num,badh:num,badhp:num,onedis:num,onedisp:num,onedisc:num,onediscp:num -o boundar.geojson
+mapshaper-xl bounds.geojson -join healthcare.csv keys=lsoa11cd,lsoa11cd field-types=lsoa11cd:str,lsoa11nm:str,oneper:num,oneperp:num,onep65:num,onep65p:num,lmlot:num,lmlotp:num,lm70:num,lm70p:num,badh:num,badhp:num,badh70:num,badh70p:num,onedis:num,onedisp:num,onedisc:num,onediscp:num -o boundar.geojson
 
 #drop some more fields
-ogr2ogr -f geojson -t_srs crs:84 -lco COORDINATE_PRECISION=5 -sql "SELECT lsoa11nm,lsoa11cd, oneper,oneperp,onep65,onep65p,lmlot,lmlotp,lmlot65,lmlot65p,badh,badhp,onedis,onedisp,onedisc,onediscp FROM boundar" boundaries.geojson boundar.geojson
+ogr2ogr -f geojson -t_srs crs:84 -lco COORDINATE_PRECISION=5 -sql "SELECT lsoa11nm,lsoa11cd, oneper,oneperp,onep65,onep65p,lmlot,lmlotp,lm70,lm70p,badh,badhp,badh70,badh70p,onedis,onedisp,onedisc,onediscp FROM boundar" boundaries.geojson boundar.geojson
 
 #tidy up
 rm bounds.geojson
@@ -89,10 +88,10 @@ echo 'joining house prices to LSOA boundaries'
 ogr2ogr -f geojson -t_srs crs:84 -sql "SELECT lsoa11cd, lsoa11nm FROM lsoaboundaries" bounds.geojson lsoaboundaries.geojson
 
 #join house prices to boundaries too
-mapshaper-xl bounds.geojson -join healthcare.csv keys=lsoa11cd,lsoa11cd field-types=lsoa11cd,lsoa11cd field-types=lsoa11cd:str,lsoa11nm:str,oneper:num,oneperp:num,onep65:num,onep65p:num,lmlot:num,lmlotp:num,lmlot65:num,lmlot65p:num,badh:num,badhp:num,onedis:num,onedisp:num,onedisc:num,onediscp:num -o boundar.geojson
+mapshaper-xl bounds.geojson -join healthcare.csv keys=lsoa11cd,lsoa11cd field-types=lsoa11cd:str,lsoa11nm:str,oneper:num,oneperp:num,onep65:num,onep65p:num,lmlot:num,lmlotp:num,lm70:num,lm70p:num,badh:num,badhp:num,badh70:num,badh70p:num,onedis:num,onedisp:num,onedisc:num,onediscp:num -o boundar.geojson
 
 #drop some more fields
-ogr2ogr -f geojson -t_srs crs:84 -lco COORDINATE_PRECISION=4 -sql "SELECT lsoa11nm,lsoa11cd, oneper,oneperp,onep65,onep65p,lmlot,lmlotp,lmlot65,lmlot65p,badh,badhp,onedis,onedisp,onedisc,onediscp FROM boundar" boundaries.geojson boundar.geojson
+ogr2ogr -f geojson -t_srs crs:84 -lco COORDINATE_PRECISION=5 -sql "SELECT lsoa11nm,lsoa11cd, oneper,oneperp,onep65,onep65p,lmlot,lmlotp,lm70,lm70p,badh,badhp,badh70,badh70p,onedis,onedisp,onedisc,onediscp FROM boundar" boundaries.geojson boundar.geojson
 
 #tidy up
 rm bounds.geojson
