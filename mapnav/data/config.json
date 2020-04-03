@@ -39,7 +39,7 @@
 "layernames":["seventyper","eighty5per","oneperp","onep65p","lmlotp","lm70p","badhp","badh70p","onedisp","onediscp","unp65p","unp6550p","unpdisp","depchildp"],
 "layerstart": "seventyper",
 "secondvars": ["seventy","eighty5","oneper","onep65","lmlot","lm70","badh","badh70","onedis","onedisc","unp65","unp6550","unpdis","depchild"],
-"tileSet": ["t26","t26","t29c","t29c","t29c","t29c","t29c","t29c","t29c","t29c","t27","t27","t27","t27"],
+"tileSet": ["t26","t26","t29c","t29c","t29c","t29c","t29c","t29c","t29c","t29c","t27a","t27a","t27a","t27a"],
 "varunit": "&nbsp;&nbsp;<b>&#x25B2;</b> <br>10% least deprived areas",
 "varunit2": "&#x25B2;&nbsp;&nbsp;<br>10% most deprived areas",
 "varunit3": "10% highest income areas <br>&nbsp;&nbsp;&darr;",
@@ -57,11 +57,11 @@
   [0,2.6,4.3,6.3,9.2,28.3],
   [3,18.2,23.6,28.4,34,60.1],
   [0,3.2,4.8,6.7,9.4,20.5],
-  [0,3.1,5.2,7.3,9.9,19],
-  [0,1.2,2.1,3,4.3,9.3],
+  [0,1.4,2.3,3.3,4.6,10],
+  [0,0.6,1,1.4,2,5.1],
   [0.1,4.1,5.7,7.1,8.8,14.8],
-  [0.5,22.4,28.8,35.8,45.6,93.6],
-  [1,16.3,23,28.6,36,81.7]],
+  [1,16.3,23,28.6,36,81.7]
+],
 "dropticks": true,
 "numberBreaks":5
 }}
