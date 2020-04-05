@@ -395,8 +395,7 @@ select {
   height: 45px;
   background: white;
   border: none;
-  max-width: 18em;
-  min-width: 13em; }
+}
   .select:after {
     content: '';
     position: absolute;

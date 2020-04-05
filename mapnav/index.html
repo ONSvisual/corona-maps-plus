@@ -121,10 +121,10 @@
    }
 
 
-	    #map {
+	  #map {
 			position:absolute;
 			top:0px;
-			margin-top:235px;
+			margin-top:190px;
 			height: 350px;
 			width: 100%;
 			overflow:visible;
@@ -132,7 +132,7 @@
 
 		#selectNav {
 			position:absolute;
-			top:-235px;
+			top:-190px;
 			left:0px;
 			width:100%;
 			height:78px;
@@ -142,7 +142,7 @@
 
 		#keydiv {
 			position:absolute;
-			top:-195px;
+			top:-150px;
 			left:0px;
 			width:100%;
 			/* height:80px; */
@@ -341,6 +341,71 @@
 	}
 
 
+/* Select styles */
+
+/* .select {
+    position: relative;
+    height: 45px;
+    background: white;
+    border: none;
+}
+.select {
+    background-color: white;
+    border: 1px solid #D0D2D3;
+}
+
+.select:before {
+    width: 43px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    background: #206095;
+    content: '';
+    pointer-events: none;
+}
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.select:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 0;
+    right: 14px;
+    bottom: 0;
+    margin: auto;
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    border-color: #ffffff transparent transparent transparent;
+    pointer-events: none;
+}
+
+
+:after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.select {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    background: transparent;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    padding-right: 35px;
+    padding-left: 15px;
+    border: 2px solid #206095;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+} */
+
 
 </style>
 
@@ -352,10 +417,14 @@
 
 <div id='map'>
   <div id="navdiv">
-    <details class="details" role="group" open>
+    <details class="details hidden-xs" role="group" open>
           <summary class="details__summary" role="button" aria-controls="details-content-3" aria-expanded="true">Hide variables</summary>
           <div id='radioselect'></div>
     </details>
+    <div class="select">
+      <select id="varselect" class="visible-xs">
+      </select>
+    </div>
   </div>
 	<div id='keydiv'>
     <div id="keyvalue">

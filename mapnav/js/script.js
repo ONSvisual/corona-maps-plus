@@ -735,6 +735,22 @@ if(Modernizr.webgl) {
 									.on("click",repaintLayer);
 
 
+							optgroup = d3.select("#varselect")
+								//.attr("name","select")
+								.on("change",repaintLayer)
+								.append("optgroup")
+								.attr("label",k)
+
+							optgroup.selectAll('option')
+									.data(mergedvars.filter(function(d,i){return d[0] == hierarchy[j]}))
+									.enter()
+									.append("option")
+									.attr("value", function(d,i){return layernames[(i + count)]})
+									.text(function(d,i) {
+										var value = parseFloat(d[1]).toFixed(1);
+										return d[1];
+									})
+									//.on("click",repaintLayer);
 
 
 							count = count + mergedvars.filter(function(d,i){return d[0] == hierarchy[j]}).length;
@@ -769,7 +785,13 @@ if(Modernizr.webgl) {
 
 			function repaintLayer(){
 
-				layername = d3.select(this).attr("value");
+				console.log(d3.select(this))
+				if(d3.select(this).attr("id") == "varselect" ) {
+					layername = d3.select(this).node().value;
+				} else {
+					layername = d3.select(this).attr("value");
+				}
+
 
 				getindexoflayer = layernames.indexOf(layername)
 				hoverlayername = hoverlayernames[getindexoflayer];
