@@ -18,6 +18,23 @@
   "% of population living in households",
   "% of population"
 ],
+"householdOrPopulation":[
+  "people",
+  "people",
+  "households",
+  "households",
+  "people",
+  "people",
+  "people",
+  "people",
+  "people",
+  "households",
+  "households",
+  "people",
+  "people",
+  "people",
+  "people"
+],
 "legendvars":[
   "People aged 70+",
   "People aged 85+",

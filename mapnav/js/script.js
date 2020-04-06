@@ -20,6 +20,8 @@ if(Modernizr.webgl) {
 		oldlsoa11cd = "";
 		firsthover = true;
 
+		lastpoint = null;
+
 
 		layernames = dvc.layernames;
 
@@ -282,8 +284,6 @@ if(Modernizr.webgl) {
 				}, 'place_suburb');
 
 
-			console.log(map.getStyle().sources["imdlayer"])
-
 			//test whether ie or not
 			function detectIE() {
 			  var ua = window.navigator.userAgent;
@@ -372,6 +372,8 @@ if(Modernizr.webgl) {
 
 		function onMove(e) {
 
+
+
 				newlsoa11cd = e.features[0].properties.lsoa11cd;
 				if(firsthover) {
           // dataLayer.push({
@@ -383,6 +385,8 @@ if(Modernizr.webgl) {
         }
 
 				if(newlsoa11cd != oldlsoa11cd) {
+					lastpoint = null;
+
 					oldlsoa11cd = e.features[0].properties.lsoa11cd;
 
 					if(map.getZoom() > 9) {
@@ -438,16 +442,18 @@ if(Modernizr.webgl) {
 				features[0] = e.features[0]
 		 		newlsoa11cd = features[0].properties.lsoa11cd;
 
+				lastpoint = e.point;
+
 				if(newlsoa11cd != oldlsoa11cd) {
 					if(map.getZoom() > 9) {
-						map.setFilter("lsoa-outlines-hover", ["==", "lsoa11cd", e.features[0].properties.lsoa11cd]);
+						map.setFilter("lsoa-outlines-hover", ["==", "lsoa11cd", features[0].properties.lsoa11cd]);
 						//var features = map.queryRenderedFeatures(e.point,{layers: ['lsoa-outlines']});
 						setAxisVal(features[0].properties.lsoa11nm, features[0].properties.lsoa11cd,features[0].properties[hoverlayername],features[0].properties[secondvar]);
 
 
 
 					} else {
-						map.setFilter("lsoa-outlines-hover2", ["==", "lsoa11cd", e.features[0].properties.lsoa11cd]);
+						map.setFilter("lsoa-outlines-hover2", ["==", "lsoa11cd", features[0].properties.lsoa11cd]);
 						//var features = map.queryRenderedFeatures(e.point,{layers: ['lsoa-outlines2']});
 						setAxisVal(features[0].properties.lsoa11nm, features[0].properties.lsoa11cd,features[0].properties[hoverlayername],features[0].properties[secondvar]);
 
@@ -472,12 +478,17 @@ if(Modernizr.webgl) {
 		function disableMouseEvents() {
 				map.off("mousemove", "lsoa-outlines", onMove);
 				map.off("mouseleave", "lsoa-outlines", onLeave);
+				map.off("mousemove", "lsoa-outlines2", onMove);
+				map.off("mouseleave", "lsoa-outlines2", onLeave);
 		}
 
 		function enableMouseEvents() {
 				map.on("mousemove", "lsoa-outlines", onMove);
 				map.on("click", "lsoa-outlines", onClick);
 				map.on("mouseleave", "lsoa-outlines", onLeave);
+				map.on("mousemove", "lsoa-outlines2", onMove);
+				map.on("click", "lsoa-outlines2", onClick);
+				map.on("mouseleave", "lsoa-outlines2", onLeave);
 		}
 
 
@@ -485,9 +496,9 @@ if(Modernizr.webgl) {
 
 			d3.select("#keyvalue").style("font-weight","bold").html(function(){
 				if(!isNaN(areaval)) {
-					return areanm + "<br>" + displayformat(areaval) + "% (" + areanum +" people)";
+					return areanm + "<br>" + displayformat(areaval) + "% (" + areanum +" " + dvc.householdOrPopulation[getindexoflayer] +")";
 				} else {
-					return areanm + "<br>" + displayformat(areaval) + "% (" + areanum +" people)";
+					return areanm + "<br>" + displayformat(areaval) + "% (" + areanum +" " + dvc.householdOrPopulation[getindexoflayer] +")";
 				}
 			});
 
@@ -499,23 +510,9 @@ if(Modernizr.webgl) {
 						return i
 					}
 				}
-				return dvc.numberBreaks // if areaval is larger than top value, assign to top value block
+				return dvc.numberBreaks;
 			}
 			d3.select("#block" + (blockLookup(areaval))).attr("stroke","orange").attr("stroke-width","3px").raise()
-
-
-			// d3.select("#keyunits2").style("font-weight","bold").text(function(){
-			// 	if(!isNaN(areaval)) {
-			// 		return areaval;
-			// 	} else {
-			// 		return areaval;
-			// 	}
-			// });
-
-			// vad3.selectAll(".blocks").attr("stroke","black").attr("stroke-width","1px");
-
-			// d3.select("#block" + (11 - areaval)).attr("stroke","orange").attr("stroke-width","1px").raise()
-
 
 		}
 
@@ -524,7 +521,6 @@ if(Modernizr.webgl) {
 
 			d3.selectAll(".blocks").attr("stroke","black").attr("stroke-width","0px").lower();
 			d3.selectAll(".legendRect").style("width","0px");
-
 
 		}
 
@@ -670,7 +666,6 @@ if(Modernizr.webgl) {
 
 				//merge structure and labels
 				mergedvars = d3.zip(dvc.structure,dvc.legendvars)
-				console.log(mergedvars.filter(function(d,i){return d[0] == hierarchy[0]}))
 				//draw radio buttons
 
 				count = 0;
@@ -718,7 +713,7 @@ if(Modernizr.webgl) {
 
 
 							radio.append("input")
-									.attr("id",function(d,i){console.log(d); return "radio"+(i + count)})
+									.attr("id",function(d,i){return "radio"+(i + count)})
 									.attr("class","input input--radio js-focusable")
 									.attr("type","radio")
 									.attr("name","layerchoice")
@@ -775,7 +770,6 @@ if(Modernizr.webgl) {
 		        layerDef['source-layer'] = sourceLayer;
 		    }
 				currsource = map.getStyle().sources["imdlayer"];
-				console.log(currsource)
 
 		    map.removeLayer(layerId);
 				map.removeSource(layerId);
@@ -785,7 +779,6 @@ if(Modernizr.webgl) {
 
 			function repaintLayer(){
 
-				console.log(d3.select(this))
 				if(d3.select(this).attr("id") == "varselect" ) {
 					layername = d3.select(this).node().value;
 				} else {
@@ -801,8 +794,6 @@ if(Modernizr.webgl) {
 				breaks = config.ons.breaks[getindexoflayer];
 
 				createKey(config);
-
-				console.log(layername)
 
 				d3.selectAll(".input--radio").property("checked",false);
 				d3.selectAll("#radio" +getindexoflayer).property("checked",true);
@@ -853,11 +844,38 @@ if(Modernizr.webgl) {
 
 				map.setPaintProperty("lsoa-outlines2", 'fill-color', styleObject);
 
-				//console.log(features)
-				if(typeof features !== 'undefined' ) {
-					setAxisVal(features[0].properties.lsoa11nm, features[0].properties.lsoa11cd,features[0].properties[hoverlayername],features[0].properties[secondvar]);
+				function checkFeaturesHigh() {
+						features = map.queryRenderedFeatures(lastpoint,{layers: ['lsoa-outlines']});
+						if(typeof features[0].properties[hoverlayername] != undefined) {
+							clearInterval(keepchecking);
+							setAxisVal(features[0].properties.lsoa11nm, features[0].properties.lsoa11cd,features[0].properties[hoverlayername],features[0].properties[secondvar]);
+						}
+				}
 
- 			 }
+				function checkFeaturesLow() {
+					  features = map.queryRenderedFeatures(lastpoint,{layers: ['lsoa-outlines2']});
+						if(typeof features[0].properties[hoverlayername] != undefined) {
+							clearInterval(keepchecking);
+							setAxisVal(features[0].properties.lsoa11nm, features[0].properties.lsoa11cd,features[0].properties[hoverlayername],features[0].properties[secondvar]);
+						}
+				}
+
+				function myStopFunction() {
+				  clearInterval(myVar);
+				}
+
+					//var features = map.queryRenderedFeatures(e.point,{layers: ['lsoa-outlines2']});
+					if(lastpoint!= null) {
+						if(map.getZoom() > 9) {
+							var keepchecking = setInterval(checkFeaturesHigh,100)
+						} else {
+							var keepchecking = setInterval(checkFeaturesLow,100);
+						}
+					}
+
+					//setAxisVal(features[0].properties.lsoa11nm, features[0].properties.lsoa11cd,features[0].properties[hoverlayername],features[0].properties[secondvar]);
+
+ 			 //}
 
 			 oldtileset = dvc.tileSet[getindexoflayer]
 
@@ -958,7 +976,6 @@ if(Modernizr.webgl) {
 		map.jumpTo({center:[lng,lat], zoom:12})
 		point = map.project([lng,lat]);
 
-
 		setTimeout(function(){
 
 		var tilechecker = setInterval(function(){
@@ -972,6 +989,8 @@ if(Modernizr.webgl) {
 				setAxisVal(features[0].properties.lsoa11nm, features[0].properties.lsoa11cd,features[0].properties[hoverlayername],features[0].properties[secondvar]);
 				//updatePercent(features[0]);
 		 		clearInterval(tilechecker);
+
+				lastpoint = point;
 		 	}
 		 },500)
 		},500);
